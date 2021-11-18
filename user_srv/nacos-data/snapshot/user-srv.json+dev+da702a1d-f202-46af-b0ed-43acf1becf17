@@ -1,0 +1,17 @@
+{
+    "name": "user-srv",
+    "tags": ["python", "user", "srv"],
+
+    "consul": {
+        "host": "192.168.190.129",
+        "port": 8500
+    },
+    
+    "mysql": {
+        "db": "mxshop",
+        "host": "120.78.84.24",
+        "port": 3306,
+        "user": "root",
+        "password": "ACB123456acb!"
+    }
+}

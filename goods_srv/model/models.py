@@ -6,6 +6,8 @@ from playhouse.shortcuts import ReconnectMixin
 from playhouse.pool import PooledMySQLDatabase
 from playhouse.mysql_ext import JSONField
 
+from goods_srv.settings import settings
+
 
 class ReconnectMySQLDatabase(ReconnectMixin, PooledMySQLDatabase):
     pass
@@ -46,7 +48,7 @@ class BaseModel(Model):
         return super().select(*fields).where(cls.is_deleted == False)
 
     class Meta:
-        database = db
+        database = settings.DB
 
 
 class Category(BaseModel):

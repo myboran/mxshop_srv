@@ -61,6 +61,8 @@ def serve():
 
     # 注册商品服务
     goods_pb2_grpc.add_GoodsServicer_to_server(GoodsServicer(), server)
+    # goods_pb2_grpc.add_GoodsServicer_to_server(CategoryServicer(), server)
+
     # 注册健康检查
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
 

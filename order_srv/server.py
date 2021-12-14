@@ -11,15 +11,15 @@ from loguru import logger
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, BASE_DIR)
-from inventory_srv.settings.settings import client
+from order_srv.settings.settings import client
 
 
-from inventory_srv.proto import inventory_pb2_grpc
-from inventory_srv.handler.inventory import InventoryServicer
+from order_srv.proto import order_pb2_grpc
+from order_srv.handler.order import OrderServicer
 
 from common.grpc_health.v1 import health, health_pb2_grpc
 from common.register import consul
-from inventory_srv.settings import settings
+from order_srv.settings import settings
 
 
 def on_exit(signo, frame):
@@ -36,7 +36,7 @@ def get_free_tcp_port():
     return port
 
 
-def serve():
+def server():
     parse = argparse.ArgumentParser()
     parse.add_argument("--ip",
                        nargs="?",
@@ -56,11 +56,11 @@ def serve():
     else:
         port = args.port
 
-    logger.add("logs/inventory_srv_{time}.log")
+    logger.add("logs/order_srv_{time}.log")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
     # 注册库存服务
-    inventory_pb2_grpc.add_InventoryServicer_to_server(InventoryServicer(), server)
+    order_pb2_grpc.add_OrderServicer_to_server(OrderServicer(), server)
     # goods_pb2_grpc.add_GoodsServicer_to_server(CategoryServicer(), server)
 
     # 注册健康检查
@@ -101,4 +101,4 @@ if __name__ == '__main__':
     # logging.basicConfig()
     # print(get_free_tcp_port())
     client.add_config_watcher(settings.NACOS["DataId"], settings.NACOS["Group"], test_cb)
-    serve()
+    server()

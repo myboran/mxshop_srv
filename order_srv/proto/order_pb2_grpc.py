@@ -15,8 +15,8 @@ class OrderStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CarItemList = channel.unary_unary(
-                '/proto.Order/CarItemList',
+        self.CartItemList = channel.unary_unary(
+                '/proto.Order/CartItemList',
                 request_serializer=order__pb2.UserInfo.SerializeToString,
                 response_deserializer=order__pb2.CartItemListResponse.FromString,
                 )
@@ -60,7 +60,7 @@ class OrderStub(object):
 class OrderServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CarItemList(self, request, context):
+    def CartItemList(self, request, context):
         """购物车
         获取用户的所有购物车信息
         """
@@ -121,8 +121,8 @@ class OrderServicer(object):
 
 def add_OrderServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CarItemList': grpc.unary_unary_rpc_method_handler(
-                    servicer.CarItemList,
+            'CartItemList': grpc.unary_unary_rpc_method_handler(
+                    servicer.CartItemList,
                     request_deserializer=order__pb2.UserInfo.FromString,
                     response_serializer=order__pb2.CartItemListResponse.SerializeToString,
             ),
@@ -172,7 +172,7 @@ class Order(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CarItemList(request,
+    def CartItemList(request,
             target,
             options=(),
             channel_credentials=None,
@@ -182,7 +182,7 @@ class Order(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/proto.Order/CarItemList',
+        return grpc.experimental.unary_unary(request, target, '/proto.Order/CartItemList',
             order__pb2.UserInfo.SerializeToString,
             order__pb2.CartItemListResponse.FromString,
             options, channel_credentials,

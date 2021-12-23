@@ -12,7 +12,7 @@ class ReconnectMysqlDatabase(ReconnectMixin, PooledMySQLDatabase):
 
 
 NACOS = {
-    "Host": "192.168.190.129",
+    "Host": "192.168.190.132",
     "Port": 8848,
     "NameSpace": "b315663b-b3c1-494a-a7f4-a7d1cab3c8ef",
     "User": "nacos",

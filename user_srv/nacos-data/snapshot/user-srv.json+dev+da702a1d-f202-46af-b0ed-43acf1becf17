@@ -3,7 +3,7 @@
     "tags": ["python", "user", "srv"],
 
     "consul": {
-        "host": "192.168.190.129",
+        "host": "192.168.190.132",
         "port": 8500
     },
     
@@ -13,5 +13,10 @@
         "port": 3306,
         "user": "root",
         "password": "ACB123456acb!"
+    },
+    "redis":{
+        "host": "120.78.84.24",
+        "port": 6379,
+        "db": 0
     }
 }

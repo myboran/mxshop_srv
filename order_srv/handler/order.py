@@ -1,17 +1,28 @@
 import json
+import time
 
 import grpc
 from peewee import DoesNotExist
 
-from order_srv.proto import order_pb2, order_pb2_grpc
+from order_srv.proto import order_pb2, order_pb2_grpc, goods_pb2_grpc, goods_pb2, inventory_pb2, inventory_pb2_grpc
 from loguru import logger
 from order_srv.model.models import ShoppingCart, OrderInfo, OrderGoods
 from google.protobuf import empty_pb2
+from common.register import consul
+from order_srv.settings import settings
+
+
+def generate_order_sn(user_id):
+    # 当前时间+user_id+随机数
+    from random import Random
+    return f'{time.strftime("%Y%m%d%H%M%S")}{user_id}{Random().randint(10, 99)}'
+
+
 
 class OrderServicer(order_pb2_grpc.OrderServicer):
 
     @logger.catch
-    def CarItemList(self, request, context):
+    def CartItemList(self, request, context):
         # 获取用户的购物车信息
         items = ShoppingCart.select().where(ShoppingCart.user == request.id)
         rsp = order_pb2.CartItemListResponse(total=items.count())
@@ -226,8 +237,7 @@ class OrderServicer(order_pb2_grpc.OrderServicer):
                                              goods_image=goods_info.goodsFrontImage,
                                              goods_price=goods_info.shopPrice, nums=goods_nums[goods_info.id])
                     order_goods_list.append(order_goods)
-                    goods_sell_info.append(
-                        inventory_pb2.GoodsInvInfo(goodsId=goods_info.id, num=goods_nums[goods_info.id]))
+                    goods_sell_info.append(inventory_pb2.GoodsInvInfo(goodsId=goods_info.id, num=goods_nums[goods_info.id]))
 
             # 扣减库存
             # 这里需要负载均衡吗？ - dns的resolver - 还没有做到维护连接
